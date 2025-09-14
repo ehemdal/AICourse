@@ -1,3 +1,4 @@
 #.gitignore
 quadratic_data.npz
 settings.json
+*.png
