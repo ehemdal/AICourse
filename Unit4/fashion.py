@@ -24,9 +24,7 @@ model.add(tf.keras.layers.Dense(64, activation=tf.nn.relu))
 model.add(tf.keras.layers.Dropout(0.2))
 model.add(tf.keras.layers.Dense(10, activation=tf.nn.softmax))
 
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 model.fit(training_images, training_labels, epochs=20)
 
