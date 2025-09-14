@@ -1,4 +1,4 @@
-# quadmodel.py
+# sinmodel.py
 import keras
 import numpy as np
 import tensorflow as tf
@@ -13,13 +13,11 @@ xs = data['x']
 ys = data['y']  
 
 # Define the model
-model = Sequential([
-    Dense(units=1, activation='linear', input_shape=([1])),
-    Dense(units=1,activation='linear', input_shape=[1]),
-    Dense(units=80, activation='relu'),
-    Dense(units=80, activation='relu'),
-    Dense(units=1,activation='linear')
-])      
+model = keras.Sequential()
+model.add(keras.Input(shape=([1])))
+model.add(Dense(units=80, activation='relu'))
+model.add(Dense(units=80, activation='relu'))
+model.add(Dense(units=1,activation='linear'))      
 model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
 model.summary()
 # Train the model
