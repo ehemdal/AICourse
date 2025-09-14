@@ -31,6 +31,8 @@ def decode_label(label):
     else:
         return "Unknown"
 
+
+index = 500 
 (training_images, training_labels), (test_images, test_labels) = datasets.fashion_mnist.load_data()
 def gen_image(img, label):
     two_d_img = (np.reshape(img, (28, 28)) * 255).astype(np.uint8)
@@ -39,8 +41,8 @@ def gen_image(img, label):
     return plot
 
 # Get a random image and show it in a pop-up window with its label.
-indices = np.random.choice(test_images.shape[0], 2, replace=False)
-this_label = test_labels[indices[0]]
+img = test_images[index]
+this_label = test_labels[index]
 print("This has label: ", this_label)
-gen_image(test_images[indices[0]],test_labels[indices[0]]).show()
+gen_image(test_images[index],test_labels[index]).show()
 
