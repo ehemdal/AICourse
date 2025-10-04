@@ -78,7 +78,7 @@ print("There are " + str(len(training_sentences)) + " training sentences")
 print("There are " + str(len(testing_sentences)) + " testing sentences")
 
 vocab_size = 20000
-embedding_dim = 32
+embedding_dim = 16
 max_length = 10
 trunc_type='post'
 padding_type='post'
@@ -113,11 +113,12 @@ testing_padded = np.array(testing_padded)
 testing_labels = np.array(testing_labels)
 
 # Here's the model....
+# I'm using the example model from page 107 of AI and Machine Learning for Coders by Laurence Moroney.
 model = tf.keras.Sequential()
 model.add(tf.keras.layers.Embedding(vocab_size, embedding_dim))
 model.add(tf.keras.layers.GlobalAveragePooling1D())
-model.add(tf.keras.layers.Dense(8, kernel_regularizer=tf.keras.regularizers.l2(0.025), activation='relu'))
-model.add(tf.keras.layers.Dense(4, activation='relu'))
+# model.add(tf.keras.layers.Dense(8, kernel_regularizer=tf.keras.regularizers.l2(0.025), activation='relu'))
+model.add(tf.keras.layers.Dense(24, activation='relu'))
 model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
 
