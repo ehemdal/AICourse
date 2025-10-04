@@ -18,7 +18,7 @@ def plot_graphs(history, string):
   plt.show()
 
 # Flag for enabling/disabling debugging output
-DEBUG = False 
+DEBUG = True 
 
 # Download the stopwords from NLTK
 from nltk.corpus import stopwords
@@ -103,9 +103,7 @@ if DEBUG:
   wc=tokenizer.word_counts
   print(wc)
   print("There are " + str(len(wc)) + " words in the word count dictionary")
-  print("The most common words are: ")  
-  for w in list(wc)[:20]:
-      print(w + " : " + str(wc[w])) 
+
 
 # Because I installed TensorFlow 2, I need to turn my lists into numpy arrays
 # I do it here because it's easier to remove punctuation and stopwords from simple Python lists
@@ -132,7 +130,15 @@ if DEBUG:
   plot_graphs(history, "loss")
   model.evaluate(testing_padded, testing_labels)
 
-sentences = ["I'm really upset right now and not happy with you! ANGRY!", "She said yes! We're getting married! Wow!"]
+# Try out some sentences to see how well the model detects sarcasm
+# The model should return a number close to 0 for non-sarcastic sentences
+# and a number close to 1 for sarcastic sentences....the probability that the sentence is sarcastic.
+sentences = ["I'm really upset right now and not happy with you! ANGRY!", 
+             "She said yes! We're getting married! Wow!", 
+             "I love trash!", 
+             "I am so sad and depressed.",
+             "Another flat tire, this day keeps getting better and better.", 
+             "I am furious about what you did!"]
 sequences = tokenizer.texts_to_sequences(sentences)
 print(sequences)
 padded = pad_sequences(sequences, maxlen=max_length, padding=padding_type, truncating=trunc_type)
