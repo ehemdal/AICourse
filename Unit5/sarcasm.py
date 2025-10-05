@@ -21,6 +21,7 @@ def plot_graphs(history, string):
 DEBUG = True 
 SLOWLEARN = True # Set to True to slow down learning rate
 SMALLVOCAB = True # Set to True to use a smaller vocabulary size
+FEWERDIMS = True # Set to True to use fewer dimensions in the embedding layer
 
 # Download the stopwords from NLTK
 from nltk.corpus import stopwords
@@ -82,7 +83,10 @@ if SMALLVOCAB:
   vocab_size = 2000
 else:
   vocab_size = 20000
-embedding_dim = 16
+if FEWERDIMS:
+  embedding_dim = 7 
+else:
+  embedding_dim = 16
 max_length = 10
 trunc_type='post'
 padding_type='post'
