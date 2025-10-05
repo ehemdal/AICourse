@@ -19,6 +19,8 @@ def plot_graphs(history, string):
 
 # Flag for enabling/disabling debugging output
 DEBUG = True 
+SLOWLEARN = True # Set to True to slow down learning rate
+SMALLVOCAB = True # Set to True to use a smaller vocabulary size
 
 # Download the stopwords from NLTK
 from nltk.corpus import stopwords
@@ -76,8 +78,10 @@ training_labels = labels[0:training_size]
 testing_labels = labels[training_size:]
 print("There are " + str(len(training_sentences)) + " training sentences")
 print("There are " + str(len(testing_sentences)) + " testing sentences")
-
-vocab_size = 20000
+if SMALLVOCAB:
+  vocab_size = 2000
+else:
+  vocab_size = 20000
 embedding_dim = 16
 max_length = 10
 trunc_type='post'
@@ -103,6 +107,20 @@ if DEBUG:
   wc=tokenizer.word_counts
   print(wc)
   print("There are " + str(len(wc)) + " words in the word count dictionary")
+  print("The 10 most common words are: ")
+  c=0
+  for w in wc:
+    print(w + " : " + str(wc[w]))
+    c=c+1
+    if c>10:
+      break 
+  print("The least common words are: ")
+  d=len(wc)
+  for w in wc:
+    if d<10:
+      print(w + " : " + str(wc[w]))
+    d=d-1 
+
 
 
 # Because I installed TensorFlow 2, I need to turn my lists into numpy arrays
@@ -117,11 +135,14 @@ testing_labels = np.array(testing_labels)
 model = tf.keras.Sequential()
 model.add(tf.keras.layers.Embedding(vocab_size, embedding_dim))
 model.add(tf.keras.layers.GlobalAveragePooling1D())
-# model.add(tf.keras.layers.Dense(8, kernel_regularizer=tf.keras.regularizers.l2(0.025), activation='relu'))
 model.add(tf.keras.layers.Dense(24, activation='relu'))
 model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
-model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
 
+# Adjust the optimizer to slow down the learning rate
+if SLOWLEARN:
+  adam = tf.keras.optimizers.Adam(learning_rate=0.0001, beta_1=0.9, beta_2=0.999, amsgrad=False)
+
+model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
 num_epochs = 100
 history = model.fit(training_padded, training_labels, epochs=num_epochs, validation_data=(testing_padded, testing_labels), verbose=2)
 
@@ -130,6 +151,7 @@ if DEBUG:
   plot_graphs(history, "accuracy")  
   plot_graphs(history, "loss")
   model.evaluate(testing_padded, testing_labels)
+  model.summary()
 
 # Try out some sentences to see how well the model detects sarcasm
 # The model should return a number close to 0 for non-sarcastic sentences
