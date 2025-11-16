@@ -1,4 +1,4 @@
-Example files for Software Engineering with AI -- currently under construction.
+Example files for RSEG-0112: Software Engineering with Artificial Intelligence -- offered at Brandeis University
 
 This repo contains files from the following sources:
 
